@@ -3,16 +3,46 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModels ="clr-namespace:ToDoApp.ViewModels"
         xmlns:local="clr-namespace:ToDoApp"
+        xmlns:viewModels="clr-namespace:ToDoApp.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" 
-        Height="450" 
-        Width="800"
-        x:Name="this"
-        d:DataContext="{d:DesignInstance {x:Type viewModels:MainWindowViewModel}, IsDesignTimeCreatable=False}">
-    <Grid>
-        <Label Content="{Binding Title}" HorizontalAlignment="Center"/>
+        Title="ToDo App" Height="450" Width="800">
+    <Window.DataContext>
+        <viewModels:MainWindowViewModel/>
+    </Window.DataContext>
+    <StackPanel Margin="10">
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBox Width="150" Margin="0,0,10,0" 
+                     Text="{Binding NewTitle, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Width="250" Margin="0,0,10,0" 
+                     Text="{Binding NewDescription, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Content="Add" Command="{Binding AddToDoCommand}" Width="75"/>
+        </StackPanel>
 
-    </Grid>
+        <TextBlock Text="Open Todos" FontWeight="Bold" Margin="0,0,0,5"/>
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+            <Button Content="Delete" Command="{Binding DeleteToDoCommand}" Width="75" Margin="0,0,10,0"/>
+            <Button Content="Complete" Command="{Binding CompleteToDoCommand}" Width="75"/>
+        </StackPanel>
+        <DataGrid ItemsSource="{Binding OpenToDos}" 
+          SelectedItem="{Binding SelectedToDo, Mode=TwoWay}" 
+          AutoGenerateColumns="False" 
+          Height="150" 
+          Margin="0,0,0,10"
+          CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="2*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <TextBlock Text="Completed Todos" FontWeight="Bold" Margin="0,10,0,5"/>
+        <DataGrid ItemsSource="{Binding CompletedToDos}" 
+                  AutoGenerateColumns="False" IsReadOnly="True" Height="150">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="2*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </StackPanel>
 </Window>
