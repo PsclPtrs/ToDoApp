@@ -7,12 +7,65 @@
         xmlns:local="clr-namespace:ToDoApp"
         mc:Ignorable="d"
         Title="MainWindow" 
-        Height="450" 
+        Height="600" 
         Width="800"
         x:Name="this"
         d:DataContext="{d:DesignInstance {x:Type viewModels:MainWindowViewModel}, IsDesignTimeCreatable=False}">
     <Grid>
-        <Label Content="{Binding Title}" HorizontalAlignment="Center"/>
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <!--<Label
+            Grid.Row="0"
+            Content="{Binding Title}" HorizontalAlignment="Left" Grid.Column="1" Margin="96,0,0,0" Grid.ColumnSpan="2"/>-->
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox Text="{Binding ToDoTitle}" GotFocus="TextBox_GotFocus"  LostFocus="TextBox_LostFocus" Grid.Column="0" Margin="5"/>
+            <TextBox x:Name="Description" Text="{Binding ToDescription}" GotFocus="Description_GotFocus" LostFocus="Description_LostFocus" Margin="5"  Grid.Column="1"/>
+
+            <Button Command="{Binding CreateToDoCommand}" Content="zur Liste Hinzufügen" Grid.Column="2" Margin="5"/>
+
+        </Grid>
+
+        <Grid
+            Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+
+            </Grid.ColumnDefinitions>
+
+            <Button Command="{Binding ChangeToDoCommand}" Content="Verschieben"  Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="2"/>
+
+            <DataGrid ItemsSource="{Binding OpenToDos}" SelectedItem="{Binding SelectedOpenToDo}" AutoGenerateColumns="False" Margin="0,99,0,10" Grid.Row="3" Grid.RowSpan="2" Grid.ColumnSpan="3" HorizontalAlignment="Left" Width="380" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Titel"  Width="*" Binding="{Binding  Title }" />
+                    <DataGridTextColumn Header="Beschreibung" Width="*" Binding="{Binding Description}" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <DataGrid ItemsSource="{Binding ClosedToDos}" AutoGenerateColumns="False" Grid.Row="3" Grid.Column="3" HorizontalAlignment="Left" Width="379">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Titel" Width="*" Binding="{Binding Title }" />
+                    <DataGridTextColumn Header="Beschreibung" Width="*" Binding="{Binding Description }" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+        </Grid>
     </Grid>
 </Window>
+   
